@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY — override in .env for production
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-me-in-production-!@#$%^&*()')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,uncle-associate-sign-promised.trycloudflare.com').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'demo-beach-resort.onrender.com').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -129,5 +129,5 @@ PAYMONGO_SECRET_KEY  = os.environ.get('PAYMONGO_SECRET_KEY', '')
 PAYMONGO_WEBHOOK_SECRET = os.environ.get('PAYMONGO_WEBHOOK_SECRET', '')
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://uncle-associate-sign-promised.trycloudflare.com',
+    'https://demo-beach-resort.onrender.com',
 ]
