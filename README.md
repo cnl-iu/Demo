@@ -15,7 +15,7 @@ A production-ready Django + PostgreSQL web application for a luxury beachfront r
 ## 🗂 Project Structure
 
 ```
-ryans_resort/
+Demo_resort/
 ├── config/                    # Django project settings
 │   ├── settings.py            # Main settings (env-driven)
 │   ├── urls.py                # Root URL configuration
@@ -85,7 +85,7 @@ Edit `.env`:
 
 ```env
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/ryans_resort
+DATABASE_URL=postgresql://user:password@localhost:5432/Demo_resort
 
 # Django
 SECRET_KEY=your-secret-key-here
@@ -99,8 +99,8 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER=youremail@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
-DEFAULT_FROM_EMAIL=Ryan's Beach Resort <noreply@ryansbeachresort.com>
-ADMIN_EMAIL=admin@ryansbeachresort.com
+DEFAULT_FROM_EMAIL=Demo Beach Resort <noreply@Demobeachresort.com>
+ADMIN_EMAIL=admin@Demobeachresort.com
 
 # PayMongo (Get from dashboard.paymongo.com)
 PAYMONGO_PUBLIC_KEY=pk_test_xxxxxxxxxxxxx
@@ -114,7 +114,7 @@ PAYMONGO_WEBHOOK_SECRET=whsk_xxxxxxxxxxxxx
 
 ```bash
 # Create PostgreSQL database
-createdb ryans_resort
+createdb Demo_resort
 
 # Run migrations
 python manage.py migrate
@@ -370,7 +370,7 @@ Set up:
 ### Database Backups
 
 ```bash
-pg_dump ryans_resort > backup_$(date +%Y%m%d).sql
+pg_dump Demo_resort > backup_$(date +%Y%m%d).sql
 ```
 
 ---
@@ -426,11 +426,11 @@ pg_dump ryans_resort > backup_$(date +%Y%m%d).sql
 ## 📞 Support
 
 For issues or questions:
-- Email: admin@ryansbeachresort.com
+- Email: admin@Demobeachresort.com
 - Phone: +63 912 345 6789
 
 ---
 
 ## 📄 License
 
-Proprietary — Ryan's Beach Resort © 2026
+Proprietary — Demo Beach Resort © 2026
