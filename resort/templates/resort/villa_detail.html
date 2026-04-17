@@ -1,0 +1,155 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}{{ villa.name }} — Demo Beach Resort{% endblock %}
+{% block meta_description %}{{ villa.short_description }}{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-content">
+    <div class="section-label">{{ villa.get_category_display }}</div>
+    <h1><em>{{ villa.name }}</em></h1>
+    <p>From ₱{{ villa.price_per_night|floatformat:0 }} per night · {{ villa.max_guests }} guests · {{ villa.bedrooms }} bedroom{{ villa.bedrooms|pluralize }}</p>
+  </div>
+</section>
+
+<section class="villa-detail-section">
+  <div class="container">
+    <div class="villa-detail-layout">
+
+      <!-- Left: Info -->
+      <div class="villa-detail-main">
+        <div class="villa-detail-gallery">
+          <div class="gallery-main">
+            {% if villa.image %}
+            <img src="{{ villa.image.url }}" alt="{{ villa.name }}">
+            {% else %}
+            <div class="img-placeholder" style="height:100%;background:linear-gradient(135deg,#1a3a4a,#2d8a7a)"></div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="villa-detail-body">
+          <h2>About This Villa</h2>
+          <p>{{ villa.description }}</p>
+
+          {% if villa.amenities %}
+          <h3 class="detail-section-title">Amenities & Features</h3>
+          <div class="amenities-list">
+            {% for amenity in villa.amenities %}
+            <div class="amenity-item">
+              <span class="amenity-check">✓</span>
+              {{ amenity }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right: Booking Card -->
+      <div class="villa-detail-sidebar">
+        <div class="villa-booking-card">
+          <div class="villa-booking-price">
+            <strong>₱{{ villa.price_per_night|floatformat:0 }}</strong>
+            <span>per night</span>
+          </div>
+
+          <div class="villa-booking-specs">
+            <div class="vb-spec">🛏 {{ villa.bedrooms }} Bedroom{{ villa.bedrooms|pluralize }}</div>
+            <div class="vb-spec">🚿 {{ villa.bathrooms }} Bathroom{{ villa.bathrooms|pluralize }}</div>
+            <div class="vb-spec">👥 Up to {{ villa.max_guests }} guests</div>
+            <div class="vb-spec">📐 {{ villa.size_sqm }} m²</div>
+          </div>
+
+          <form action="{% url 'booking_step1' %}" method="GET">
+            <input type="hidden" name="villa_type" value="{{ villa.id }}">
+            <div class="form-group" style="margin-bottom:12px">
+              <label>Check-In</label>
+              <input type="date" name="check_in" class="form-input" id="vd-checkin">
+            </div>
+            <div class="form-group" style="margin-bottom:16px">
+              <label>Check-Out</label>
+              <input type="date" name="check_out" class="form-input" id="vd-checkout">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Reserve This Villa</button>
+          </form>
+
+          <div class="villa-booking-note">
+            <p>You won't be charged yet. Review your booking before confirming.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {% if related %}
+    <div class="related-villas">
+      <h3 class="related-title">Other Villas You Might Like</h3>
+      <div class="villas-grid">
+        {% for r in related %}
+        <article class="villa-card">
+          <a href="{% url 'villa_detail' r.slug %}">
+            <div class="villa-card-img">
+              {% if r.image %}<img src="{{ r.image.url }}" alt="{{ r.name }}">
+              {% else %}<div class="img-placeholder"></div>{% endif %}
+              <div class="villa-card-badge">From ₱{{ r.price_per_night|floatformat:0 }}/night</div>
+            </div>
+            <div class="villa-card-body">
+              <div class="villa-meta"><span class="villa-category">{{ r.get_category_display }}</span></div>
+              <h3>{{ r.name }}</h3>
+              <p>{{ r.short_description }}</p>
+              <span class="villa-link">View Details →</span>
+            </div>
+          </a>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.villa-detail-section { padding: 60px 0; }
+.villa-detail-layout { display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: start; }
+.villa-detail-gallery .gallery-main { height: 420px; border-radius: var(--radius-lg); overflow: hidden; }
+.villa-detail-body { margin-top: 32px; }
+.villa-detail-body h2 { font-size: 1.8rem; margin-bottom: 16px; }
+.detail-section-title { font-family: var(--font-body); font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--mist); margin: 28px 0 16px; padding-top: 24px; border-top: 1px solid var(--sand-dark); }
+.amenities-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.amenity-item { display: flex; align-items: center; gap: 8px; font-size: .88rem; }
+.amenity-check { color: var(--teal); font-weight: 600; }
+.villa-booking-card { background: var(--sand); border-radius: var(--radius-lg); padding: 28px; position: sticky; top: calc(var(--nav-h) + 24px); }
+.villa-booking-price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 20px; }
+.villa-booking-price strong { font-family: var(--font-display); font-size: 2.2rem; color: var(--ocean); }
+.villa-booking-price span { color: var(--mist); font-size: .9rem; }
+.villa-booking-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--sand-dark); }
+.vb-spec { font-size: .85rem; color: var(--mist); }
+.villa-booking-note { margin-top: 16px; text-align: center; }
+.villa-booking-note p { font-size: .78rem; color: var(--mist); margin: 0; }
+.related-villas { margin-top: 80px; padding-top: 60px; border-top: 2px solid var(--sand-dark); }
+.related-title { font-family: var(--font-body); font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--mist); margin-bottom: 32px; }
+@media (max-width: 900px) { .villa-detail-layout { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const today = new Date().toISOString().split('T')[0];
+  const ci = document.getElementById('vd-checkin');
+  const co = document.getElementById('vd-checkout');
+  ci.min = today; ci.value = today;
+  const tom = new Date(Date.now()+86400000).toISOString().split('T')[0];
+  co.min = tom; co.value = tom;
+  ci.addEventListener('change', () => {
+    const n = new Date(new Date(ci.value).getTime()+86400000).toISOString().split('T')[0];
+    co.min = n;
+    if (co.value <= ci.value) co.value = n;
+  });
+</script>
+{% endblock %}

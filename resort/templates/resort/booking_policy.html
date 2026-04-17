@@ -1,0 +1,123 @@
+{% extends 'resort/base.html' %}
+{% block title %}Booking Policy — Demo Beach Resort{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="page-hero-content">
+    <div class="section-label">Policies</div>
+    <h1>Booking <em>Policy</em></h1>
+    <p>Everything you need to know about reservations</p>
+  </div>
+</section>
+
+<section class="policy-section">
+  <div class="container container--narrow">
+    <div class="policy-content">
+
+      <nav class="policy-toc">
+        <h4>Contents</h4>
+        <ol>
+          <li><a href="#cancellation">Cancellation Policy</a></li>
+          <li><a href="#modification">Modifications</a></li>
+          <li><a href="#deposit">Deposit & Payment</a></li>
+          <li><a href="#noshow">No-Show Policy</a></li>
+          <li><a href="#minStay">Minimum Stay</a></li>
+          <li><a href="#groupPolicy">Group Bookings</a></li>
+          <li><a href="#childPolicy">Children Policy</a></li>
+          <li><a href="#forceM">Force Majeure</a></li>
+        </ol>
+      </nav>
+
+      <!-- Cancellation Summary Cards -->
+      <div class="policy-highlight-grid">
+        <div class="policy-card policy-card--green">
+          <div class="policy-card-icon">✅</div>
+          <h4>Free Cancellation</h4>
+          <p>Cancel 14+ days before arrival for a <strong>100% refund</strong>.</p>
+        </div>
+        <div class="policy-card policy-card--yellow">
+          <div class="policy-card-icon">⚠️</div>
+          <h4>Partial Refund</h4>
+          <p>Cancel 7–13 days before arrival for a <strong>50% refund</strong>.</p>
+        </div>
+        <div class="policy-card policy-card--red">
+          <div class="policy-card-icon">❌</div>
+          <h4>No Refund</h4>
+          <p>Cancel within 7 days of arrival — <strong>no refund</strong> applies.</p>
+        </div>
+      </div>
+
+      <h2 id="cancellation">1. Cancellation Policy</h2>
+      <p>All cancellations must be submitted in writing to <a href="mailto:reservations@beachresort.com">reservations@beachresort.com</a> and will be acknowledged within 24 hours with a cancellation reference number.</p>
+      
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>Notice Period</th>
+            <th>Refund Amount</th>
+            <th>Processing Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-green">
+            <td>14 or more days before arrival</td>
+            <td><strong>100%</strong> of total paid</td>
+            <td>5–10 business days</td>
+          </tr>
+          <tr class="row-yellow">
+            <td>7 to 13 days before arrival</td>
+            <td><strong>50%</strong> of total paid</td>
+            <td>5–10 business days</td>
+          </tr>
+          <tr class="row-red">
+            <td>Less than 7 days before arrival</td>
+            <td><strong>0%</strong> — no refund</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td>Peak season (Dec 15 – Jan 5, Easter week)</td>
+            <td>Special terms apply (see peak rates)</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="modification">2. Modifications</h2>
+      <p>Reservation modifications (date changes, villa type upgrades) are subject to availability and must be requested at least 7 days prior to arrival. Date changes to a later period are accommodated free of charge once per booking. Rate differences for upgraded villas will be charged at the prevailing rate.</p>
+
+      <h2 id="deposit">3. Deposit & Payment Schedule</h2>
+      <ul>
+        <li><strong>At Booking:</strong> 50% deposit required within 48 hours of confirmation</li>
+        <li><strong>14 Days Prior:</strong> Remaining 50% balance due</li>
+        <li><strong>Late Bookings (within 14 days):</strong> 100% payment required at time of booking</li>
+        <li><strong>On Arrival:</strong> Security deposit of ₱5,000 (refunded on departure)</li>
+      </ul>
+      <p>Failure to pay the deposit within the required timeframe may result in automatic cancellation of the reservation without notice.</p>
+
+      <h2 id="noshow">4. No-Show Policy</h2>
+      <p>In the event of a no-show (failure to arrive on the check-in date without prior cancellation notice), the full booking amount will be forfeited, and the villa will be released for resale after 6:00 PM on the day of arrival. No refund or partial credit will be issued for no-shows.</p>
+
+      <h2 id="minStay">5. Minimum Stay Requirements</h2>
+      <p>A minimum stay of <strong>2 nights</strong> is required year-round for all villa bookings. During peak season (December 15 through January 5, and Holy Week), a minimum stay of <strong>4 nights</strong> applies. These requirements are strictly enforced and cannot be waived.</p>
+
+      <h2 id="groupPolicy">6. Group Bookings</h2>
+      <p>Bookings of 3 or more villas simultaneously are classified as group bookings. Group bookings require a 50% non-refundable deposit at time of confirmation, with the balance due 30 days before arrival. Different cancellation terms apply to group bookings — contact our reservations team for details.</p>
+
+      <h2 id="childPolicy">7. Children Policy</h2>
+      <p>Children under 12 years of age stay free when sharing a villa with parents using existing bedding. Children over 12 are counted as adults for occupancy purposes. A maximum of 2 children (under 12) per villa applies. Baby cots are available on request at no extra charge.</p>
+
+      <h2 id="forceM">8. Force Majeure</h2>
+      <p>In the event that a stay cannot proceed due to circumstances beyond the Resort's control (typhoon, government travel restrictions, natural disaster), we will offer a full date change with no change fees, or a credit voucher valid for 12 months. Cash refunds in force majeure situations are handled case-by-case.</p>
+
+      <div class="policy-footer">
+        <p>Questions about our booking policy? Contact <a href="mailto:reservations@beachresort.com">reservations@beachresort.com</a> or call <a href="tel:+639123456789">+63 912 345 6789</a>.</p>
+        <div class="policy-footer-links">
+          <a href="{% url 'booking_step1' %}" class="btn btn-primary">Make a Reservation</a>
+          <a href="{% url 'terms_conditions' %}" class="btn btn-outline">Terms & Conditions</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

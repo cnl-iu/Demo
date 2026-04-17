@@ -1,0 +1,160 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}Contact & Location — Demo Beach Resort{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-content">
+    <div class="section-label">Get in Touch</div>
+    <h1>Contact &amp; <em>Location</em></h1>
+    <p>We'd love to hear from you</p>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-layout">
+
+      <!-- Left: Contact Info -->
+      <div class="contact-info">
+        <h2>Find Us</h2>
+        
+        <div class="contact-cards">
+          <div class="contact-card">
+            <div class="contact-icon">📍</div>
+            <div>
+              <h4>Address</h4>
+              <address>
+                Barangay Paradise Cove<br>
+                El Nido, Palawan 5313<br>
+                Philippines
+              </address>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">📞</div>
+            <div>
+              <h4>Phone</h4>
+              <p><a href="tel:+639123456789">+63 912 345 6789</a></p>
+              <p><a href="tel:+6348123456">+63 48 123 456</a> (local)</p>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <h4>Email</h4>
+              <p><a href="mailto:hello@beachresort.com">hello@beachresort.com</a></p>
+              <p><a href="mailto:reservations@beachresort.com">reservations@beachresort.com</a></p>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <h4>Office Hours</h4>
+              <p>Reception: 24/7</p>
+              <p>Reservations: 8AM – 10PM (PHT)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Getting There -->
+        <div class="getting-there">
+          <h3>Getting Here</h3>
+          <div class="travel-options">
+            <div class="travel-option">
+              <span class="travel-icon">✈️</span>
+              <div>
+                <strong>By Air</strong>
+                <p>Fly into El Nido Airport (ENI) or Puerto Princesa Airport (PPS). Charter flights available from Manila.</p>
+              </div>
+            </div>
+            <div class="travel-option">
+              <span class="travel-icon">🚤</span>
+              <div>
+                <strong>By Sea</strong>
+                <p>Ferry from Coron or private boat charter. We offer complimentary speedboat pickup from El Nido port with advance notice.</p>
+              </div>
+            </div>
+            <div class="travel-option">
+              <span class="travel-icon">🚗</span>
+              <div>
+                <strong>By Land</strong>
+                <p>Van transfer from Puerto Princesa (~5 hours). We can arrange private transfers — contact us for rates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map placeholder -->
+        <div class="map-container">
+          <div class="map-placeholder">
+            <div class="map-overlay">
+              <p>📍 Demo Beach Resort</p>
+              <p>El Nido, Palawan</p>
+              <a href="https://maps.google.com/?q=El+Nido+Palawan+Philippines" target="_blank" class="btn btn-sm btn-outline">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div class="contact-form-wrapper">
+        <div class="contact-form-card">
+          <h2>Send Us a Message</h2>
+          <p>Have a question about your booking, our villas, or special requests? We'll get back to you within 2 hours.</p>
+
+          {% if messages %}
+          {% for message in messages %}
+          <div class="form-success">{{ message }}</div>
+          {% endfor %}
+          {% endif %}
+
+          <form method="POST" class="contact-form">
+            {% csrf_token %}
+
+            <div class="form-grid-2">
+              <div class="form-group {% if form.name.errors %}has-error{% endif %}">
+                <label>Full Name *</label>
+                {{ form.name }}
+                {% if form.name.errors %}<span class="field-error">{{ form.name.errors.0 }}</span>{% endif %}
+              </div>
+              <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                <label>Email *</label>
+                {{ form.email }}
+                {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Phone (Optional)</label>
+                {{ form.phone }}
+              </div>
+              <div class="form-group {% if form.subject.errors %}has-error{% endif %}">
+                <label>Subject *</label>
+                {{ form.subject }}
+                {% if form.subject.errors %}<span class="field-error">{{ form.subject.errors.0 }}</span>{% endif %}
+              </div>
+            </div>
+
+            <div class="form-group {% if form.message.errors %}has-error{% endif %}">
+              <label>Message *</label>
+              {{ form.message }}
+              {% if form.message.errors %}<span class="field-error">{{ form.message.errors.0 }}</span>{% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full btn-lg">Send Message →</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

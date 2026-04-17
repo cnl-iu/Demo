@@ -1,0 +1,298 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}Demo Beach Resort — Luxury Beachfront Villas in Palawan{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-overlay"></div>
+    <div class="hero-waves">
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Welcome to Paradise</div>
+    <h1 class="hero-title">Where the Sky<br><em>Meets the Sea</em></h1>
+    <p class="hero-subtitle">Exclusive beachfront villas nestled in the pristine shores of Palawan. Wake to the sound of waves, fall asleep under the stars.</p>
+    
+    <!-- Quick Availability Search -->
+    <div class="hero-search">
+      <form action="{% url 'find_accommodation' %}" method="GET" class="search-bar">
+        <div class="search-field">
+          <label>Check In</label>
+          <input type="date" name="check_in" id="hero-checkin" required>
+        </div>
+        <div class="search-divider"></div>
+        <div class="search-field">
+          <label>Check Out</label>
+          <input type="date" name="check_out" id="hero-checkout" required>
+        </div>
+        <div class="search-divider"></div>
+        <div class="search-field">
+          <label>Guests</label>
+          <select name="guests">
+            <option value="1">1 Guest</option>
+            <option value="2" selected>2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5+ Guests</option>
+          </select>
+        </div>
+        <button type="submit" class="search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </form>
+    </div>
+
+    <div class="hero-cta-group">
+      <a href="{% url 'accommodations' %}" class="btn btn-primary">Explore Villas</a>
+      <a href="{% url 'booking_step1' %}" class="btn btn-ghost">Book Your Stay</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════ STATS BAR ══════════════ -->
+<section class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <strong>15+</strong>
+      <span>Villa Types</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <strong>5★</strong>
+      <span>Guest Rating</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <strong>24/7</strong>
+      <span>Concierge</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <strong>12yr</strong>
+      <span>Est. 2012</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ INTRO ══════════════ -->
+<section class="intro-section">
+  <div class="container">
+    <div class="intro-grid">
+      <div class="intro-text">
+        <div class="section-label">Our Story</div>
+        <h2 class="section-title">A Living Dream<br><em>On the Shore</em></h2>
+        <p>Demo Beach Resort began as a vision — a place where the untamed beauty of the Philippine sea meets thoughtful luxury. Each villa is individually designed, telling a different story through local craftsmanship, natural materials, and uninterrupted ocean views.</p>
+        <p>Nestled along a private stretch of white-sand beach in Palawan, we host discerning travelers seeking genuine connection with nature without sacrificing comfort.</p>
+        <a href="{% url 'accommodations' %}" class="btn btn-outline">Discover Our Villas →</a>
+      </div>
+      <div class="intro-visuals">
+        <div class="intro-img-grid">
+          <div class="intro-img intro-img-1">
+            <div class="img-placeholder img-beach"></div>
+          </div>
+          <div class="intro-img intro-img-2">
+            <div class="img-placeholder img-villa"></div>
+          </div>
+          <div class="intro-img intro-img-3">
+            <div class="img-placeholder img-pool"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FEATURED VILLAS ══════════════ -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Accommodations</div>
+      <h2 class="section-title">Featured <em>Villas</em></h2>
+      <p>Each accommodation is a world unto itself — crafted to offer a unique interpretation of beachside living.</p>
+    </div>
+
+    <div class="villas-grid">
+      {% for villa in featured_villas %}
+      <article class="villa-card" data-aos>
+        <a href="{% url 'villa_detail' villa.slug %}">
+          <div class="villa-card-img">
+            {% if villa.image %}
+            <img src="{{ villa.image.url }}" alt="{{ villa.name }}">
+            {% else %}
+            <div class="img-placeholder img-villa-{{ forloop.counter }}"></div>
+            {% endif %}
+            <div class="villa-card-badge">From ₱{{ villa.price_per_night|floatformat:0 }}/night</div>
+          </div>
+          <div class="villa-card-body">
+            <div class="villa-meta">
+              <span class="villa-category">{{ villa.get_category_display }}</span>
+              <span class="villa-guests">{{ villa.max_guests }} guests</span>
+            </div>
+            <h3>{{ villa.name }}</h3>
+            <p>{{ villa.short_description }}</p>
+            <div class="villa-features">
+              <span>🛏 {{ villa.bedrooms }} bed</span>
+              <span>🚿 {{ villa.bathrooms }} bath</span>
+              <span>📐 {{ villa.size_sqm }}m²</span>
+            </div>
+            <span class="villa-link">View Details →</span>
+          </div>
+        </a>
+      </article>
+      {% empty %}
+      <!-- Placeholder cards if no DB data yet -->
+      <article class="villa-card">
+        <div class="villa-card-img"><div class="img-placeholder img-villa-1"></div>
+          <div class="villa-card-badge">From ₱8,500/night</div></div>
+        <div class="villa-card-body">
+          <div class="villa-meta"><span class="villa-category">Beachfront</span><span class="villa-guests">2 guests</span></div>
+          <h3>Ocean Breeze Villa</h3>
+          <p>Step directly onto the sand from your private terrace. Panoramic sea views from every room.</p>
+          <div class="villa-features"><span>🛏 1 bed</span><span>🚿 1 bath</span><span>📐 65m²</span></div>
+          <a href="{% url 'accommodations' %}" class="villa-link">View Details →</a>
+        </div>
+      </article>
+      <article class="villa-card">
+        <div class="villa-card-img"><div class="img-placeholder img-villa-2"></div>
+          <div class="villa-card-badge">From ₱14,500/night</div></div>
+        <div class="villa-card-body">
+          <div class="villa-meta"><span class="villa-category">Pool Access</span><span class="villa-guests">4 guests</span></div>
+          <h3>Lagoon Pool Suite</h3>
+          <p>Your private infinity pool blends seamlessly into the horizon. The ultimate romantic retreat.</p>
+          <div class="villa-features"><span>🛏 2 bed</span><span>🚿 2 bath</span><span>📐 110m²</span></div>
+          <a href="{% url 'accommodations' %}" class="villa-link">View Details →</a>
+        </div>
+      </article>
+      <article class="villa-card">
+        <div class="villa-card-img"><div class="img-placeholder img-villa-3"></div>
+          <div class="villa-card-badge">From ₱22,000/night</div></div>
+        <div class="villa-card-body">
+          <div class="villa-meta"><span class="villa-category">Cliffside</span><span class="villa-guests">6 guests</span></div>
+          <h3>Cliffside Grand Villa</h3>
+          <p>Elevated above the turquoise bay, this dramatic villa commands breathtaking 270° vistas.</p>
+          <div class="villa-features"><span>🛏 3 bed</span><span>🚿 3 bath</span><span>📐 180m²</span></div>
+          <a href="{% url 'accommodations' %}" class="villa-link">View Details →</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="section-cta">
+      <a href="{% url 'accommodations' %}" class="btn btn-outline">View All Accommodations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ AMENITIES ══════════════ -->
+<section class="amenities-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">The Experience</div>
+      <h2 class="section-title">Everything You <em>Need</em></h2>
+    </div>
+    <div class="amenities-grid">
+      <div class="amenity-card">
+        <div class="amenity-icon">🏊</div>
+        <h4>Infinity Pools</h4>
+        <p>Multiple horizon pools scattered across the resort, each with its own character and view.</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🍽</div>
+        <h4>Ocean-to-Table Dining</h4>
+        <p>Fresh catch served daily by our resident chef. Sunset dinners on the private beach upon request.</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🧖</div>
+        <h4>Beachside Spa</h4>
+        <p>Traditional Filipino wellness rituals using local botanicals. Reconnect body and soul.</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🚤</div>
+        <h4>Water Activities</h4>
+        <p>Snorkeling, kayaking, island-hopping tours. Discover the hidden coves of Palawan.</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🌅</div>
+        <h4>Private Beach Access</h4>
+        <p>800 metres of pristine white sand, exclusively for resort guests.</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🌿</div>
+        <h4>Eco-Conscious</h4>
+        <p>Solar powered, reef-safe, zero single-use plastics. We protect the paradise we're in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+{% if testimonials %}
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Guest Stories</div>
+      <h2 class="section-title">Words from <em>Our Guests</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      {% for t in testimonials %}
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          {% for i in "12345" %}★{% endfor %}
+        </div>
+        <blockquote>"{{ t.text }}"</blockquote>
+        <div class="testimonial-author">
+          <strong>{{ t.guest_name }}</strong>
+          <span>{{ t.guest_country }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ══════════════ CTA BAND ══════════════ -->
+<section class="cta-section">
+  <div class="cta-content">
+    <h2>Ready for Your<br><em>Paradise Escape?</em></h2>
+    <p>Check real-time availability and secure your villa in minutes.</p>
+    <div class="cta-buttons">
+      <a href="{% url 'booking_step1' %}" class="btn btn-primary btn-lg">Book Your Villa</a>
+      <a href="{% url 'find_accommodation' %}" class="btn btn-ghost btn-lg">Check Availability</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Set minimum dates for hero search
+  const today = new Date().toISOString().split('T')[0];
+  const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  document.getElementById('hero-checkin').min = today;
+  document.getElementById('hero-checkin').value = today;
+  document.getElementById('hero-checkout').min = tomorrow;
+  document.getElementById('hero-checkout').value = tomorrow;
+
+  document.getElementById('hero-checkin').addEventListener('change', function () {
+    const nextDay = new Date(new Date(this.value).getTime() + 86400000).toISOString().split('T')[0];
+    document.getElementById('hero-checkout').min = nextDay;
+    if (document.getElementById('hero-checkout').value <= this.value) {
+      document.getElementById('hero-checkout').value = nextDay;
+    }
+  });
+</script>
+{% endblock %}

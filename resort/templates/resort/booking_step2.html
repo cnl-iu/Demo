@@ -1,0 +1,175 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}Book Your Stay — Step 2 | Demo Beach Resort{% endblock %}
+
+{% block content %}
+
+<section class="booking-section">
+  <div class="container">
+
+    <!-- Progress -->
+    <div class="booking-progress">
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Select Villa & Dates</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step active"><div class="step-circle">2</div><span>Guest Details</span></div>
+      <div class="progress-line"></div>
+      <div class="progress-step"><div class="step-circle">3</div><span>Confirmation</span></div>
+    </div>
+
+    <div class="booking-layout">
+
+      <!-- Left: Form -->
+      <div class="booking-main">
+        <h2 class="booking-title">Your <em>Details</em></h2>
+        <p class="booking-subtitle">Please provide your information to complete the reservation.</p>
+
+        <form method="POST" action="{% url 'booking_step2' %}">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+          <div class="form-errors">
+            {% for error in form.non_field_errors %}
+            <p class="error-msg">{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Personal Information -->
+          <div class="form-section">
+            <h3>Personal Information</h3>
+            <div class="form-grid-2">
+              <div class="form-group {% if form.first_name.errors %}has-error{% endif %}">
+                <label for="{{ form.first_name.id_for_label }}">First Name *</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}<span class="field-error">{{ form.first_name.errors.0 }}</span>{% endif %}
+              </div>
+              <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+                <label for="{{ form.last_name.id_for_label }}">Last Name *</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}<span class="field-error">{{ form.last_name.errors.0 }}</span>{% endif %}
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                <label for="{{ form.email.id_for_label }}">Email Address *</label>
+                {{ form.email }}
+                {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
+              </div>
+              <div class="form-group {% if form.phone.errors %}has-error{% endif %}">
+                <label for="{{ form.phone.id_for_label }}">Phone Number *</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}<span class="field-error">{{ form.phone.errors.0 }}</span>{% endif %}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="{{ form.country.id_for_label }}">Country</label>
+              {{ form.country }}
+            </div>
+          </div>
+
+          <!-- Guest Breakdown -->
+          <div class="form-section">
+            <h3>Guest Breakdown</h3>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="{{ form.adults.id_for_label }}">Adults *</label>
+                {{ form.adults }}
+              </div>
+              <div class="form-group">
+                <label for="{{ form.children.id_for_label }}">Children (under 12)</label>
+                {{ form.children }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Special Requests -->
+          <div class="form-section">
+            <h3>Special Requests</h3>
+            <div class="form-group">
+              <label for="{{ form.special_requests.id_for_label }}">Special Requests <span class="optional">(Optional)</span></label>
+              {{ form.special_requests }}
+              <p class="form-hint">Dietary requirements, late check-in, celebration setup, etc. We'll do our best to accommodate.</p>
+            </div>
+          </div>
+
+          <!-- Terms Agreement -->
+          <div class="form-section">
+            <div class="form-group form-group--checkbox {% if form.agree_terms.errors %}has-error{% endif %}">
+              <label class="checkbox-label">
+                {{ form.agree_terms }}
+                <span>I agree to the 
+                  <a href="{% url 'terms_conditions' %}" target="_blank">Terms & Conditions</a> 
+                  and 
+                  <a href="{% url 'booking_policy' %}" target="_blank">Booking Policy</a>
+                </span>
+              </label>
+              {% if form.agree_terms.errors %}<span class="field-error">{{ form.agree_terms.errors.0 }}</span>{% endif %}
+            </div>
+          </div>
+
+          <div class="booking-actions">
+            <a href="{% url 'booking_step1' %}" class="btn btn-ghost">← Change Villa/Dates</a>
+            <button type="submit" class="btn btn-primary btn-lg">Confirm Booking →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Reservation Summary -->
+      <div class="booking-sidebar">
+        <div class="booking-summary-card booking-summary-card--static">
+          <h3>Your Reservation</h3>
+          
+          <div class="summary-villa">
+            <strong>{{ villa_type.name }}</strong>
+            <span class="villa-category-badge">{{ villa_type.get_category_display }}</span>
+          </div>
+
+          <div class="summary-dates">
+            <div class="date-row">
+              <div class="date-block">
+                <label>Check-In</label>
+                <strong>{{ check_in|date:"D, d M Y" }}</strong>
+                <span>From 2:00 PM</span>
+              </div>
+              <div class="date-arrow">→</div>
+              <div class="date-block">
+                <label>Check-Out</label>
+                <strong>{{ check_out|date:"D, d M Y" }}</strong>
+                <span>Until 12:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-breakdown">
+            <div class="summary-line">
+              <span>₱{{ villa_type.price_per_night|floatformat:0 }} × {{ nights }} night{{ nights|pluralize }}</span>
+              <span>₱{{ total_price|floatformat:0 }}</span>
+            </div>
+            <div class="summary-line">
+              <span>Taxes & fees</span>
+              <span>Included</span>
+            </div>
+            <div class="summary-line">
+              <span>Breakfast</span>
+              <span>Included</span>
+            </div>
+          </div>
+
+          <div class="summary-total">
+            <span>Total</span>
+            <strong>₱{{ total_price|floatformat:0 }}</strong>
+          </div>
+        </div>
+
+        <div class="booking-info-card">
+          <h4>🔒 Secure Booking</h4>
+          <p>Your details are protected. Payment is handled on-site or via bank transfer after confirmation.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

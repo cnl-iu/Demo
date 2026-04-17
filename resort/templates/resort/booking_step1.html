@@ -1,0 +1,196 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}Book Your Stay — Step 1 | Demo Beach Resort{% endblock %}
+
+{% block content %}
+
+<section class="booking-section">
+  <div class="container">
+    
+    <!-- Progress Steps -->
+    <div class="booking-progress">
+      <div class="progress-step active">
+        <div class="step-circle">1</div>
+        <span>Select Villa & Dates</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step">
+        <div class="step-circle">2</div>
+        <span>Guest Details</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step">
+        <div class="step-circle">3</div>
+        <span>Confirmation</span>
+      </div>
+    </div>
+
+    <div class="booking-layout">
+      
+      <!-- Left: Form -->
+      <div class="booking-main">
+        <h2 class="booking-title">Choose Your <em>Villa &amp; Dates</em></h2>
+        <p class="booking-subtitle">Select your preferred accommodation and travel dates to proceed.</p>
+
+        <form method="POST" action="{% url 'booking_step1' %}" id="step1-form">
+          {% csrf_token %}
+
+          <!-- Villa Type Selection -->
+          <div class="form-section">
+            <h3>Select Villa</h3>
+            <div class="villa-picker">
+              {% for villa in villa_types %}
+              <label class="villa-option {% if selected_villa and selected_villa.id == villa.id %}selected{% endif %}" 
+                     for="villa_{{ villa.id }}">
+                <input type="radio" name="villa_type_id" id="villa_{{ villa.id }}" 
+                       value="{{ villa.id }}"
+                       {% if selected_villa and selected_villa.id == villa.id %}checked{% endif %}
+                       required>
+                <div class="villa-option-img">
+                  <div class="img-placeholder" style="height:100px;background:linear-gradient(135deg,{% cycle '#1a3a4a' '#2d4a3a' '#3a2a1a' %},{% cycle '#3d8a7a' '#5a8a4a' '#8a5a3a' %})"></div>
+                </div>
+                <div class="villa-option-info">
+                  <strong>{{ villa.name }}</strong>
+                  <span class="villa-option-cat">{{ villa.get_category_display }}</span>
+                  <div class="villa-option-specs">{{ villa.bedrooms }}bd · {{ villa.bathrooms }}ba · {{ villa.max_guests }} guests</div>
+                  <div class="villa-option-price">₱{{ villa.price_per_night|floatformat:0 }}/night</div>
+                </div>
+                <div class="villa-option-check">✓</div>
+              </label>
+              {% empty %}
+              <p class="empty-state">No villas currently available. <a href="{% url 'contact' %}">Contact us</a> for more information.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Date & Guest Selection -->
+          <div class="form-section">
+            <h3>Travel Dates</h3>
+            <div class="date-grid">
+              <div class="form-group">
+                <label for="check_in">Check-In</label>
+                <input type="date" name="check_in" id="check_in" class="form-input"
+                       value="{{ check_in }}" min="{{ today }}" required>
+              </div>
+              <div class="form-group">
+                <label for="check_out">Check-Out</label>
+                <input type="date" name="check_out" id="check_out" class="form-input"
+                       value="{{ check_out }}" required>
+              </div>
+              <div class="form-group">
+                <label for="guests">Guests</label>
+                <select name="guests" id="guests" class="form-input">
+                  {% for n in "12345678" %}
+                  <option value="{{ n }}" {% if guests == n %}selected{% endif %}>{{ n }} Guest{{ n|pluralize }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-actions">
+            <a href="{% url 'accommodations' %}" class="btn btn-ghost">← Back to Villas</a>
+            <button type="submit" class="btn btn-primary btn-lg">Continue to Details →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Summary -->
+      <div class="booking-sidebar">
+        <div class="booking-summary-card">
+          <h3>Stay Summary</h3>
+          <div id="summary-content">
+            <div class="summary-placeholder">
+              <div class="summary-icon">🏝</div>
+              <p>Select a villa and dates to see your price summary.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-info-card">
+          <h4>✅ Booking Includes</h4>
+          <ul>
+            <li>Daily breakfast for all guests</li>
+            <li>Beach towels & equipment</li>
+            <li>Complimentary welcome drink</li>
+            <li>24/7 concierge assistance</li>
+          </ul>
+        </div>
+
+        <div class="booking-policy-note">
+          <p>By proceeding, you agree to our 
+            <a href="{% url 'terms_conditions' %}" target="_blank">Terms</a> and 
+            <a href="{% url 'booking_policy' %}" target="_blank">Booking Policy</a>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const today = new Date().toISOString().split('T')[0];
+  const checkIn = document.getElementById('check_in');
+  const checkOut = document.getElementById('check_out');
+
+  if (!checkIn.value) { checkIn.value = today; checkIn.min = today; }
+
+  function updateCheckout() {
+    if (checkIn.value) {
+      const nextDay = new Date(new Date(checkIn.value).getTime() + 86400000).toISOString().split('T')[0];
+      checkOut.min = nextDay;
+      if (!checkOut.value || checkOut.value <= checkIn.value) checkOut.value = nextDay;
+    }
+  }
+  checkIn.addEventListener('change', updateCheckout);
+  updateCheckout();
+
+  // Dynamic price summary
+  function updateSummary() {
+    const selectedVilla = document.querySelector('input[name="villa_type_id"]:checked');
+    const ci = checkIn.value, co = checkOut.value;
+    
+    if (!selectedVilla || !ci || !co) return;
+    
+    const label = selectedVilla.closest('.villa-option').querySelector('strong').textContent;
+    const priceStr = selectedVilla.closest('.villa-option').querySelector('.villa-option-price').textContent;
+    const priceMatch = priceStr.match(/[\d,]+/);
+    if (!priceMatch) return;
+    const priceNum = parseInt(priceMatch[0].replace(',', ''));
+
+    const nights = Math.round((new Date(co) - new Date(ci)) / 86400000);
+    if (nights < 1) return;
+
+    const total = priceNum * nights;
+    document.getElementById('summary-content').innerHTML = `
+      <div class="summary-villa"><strong>${label}</strong></div>
+      <div class="summary-dates">
+        <div>${ci} <span>→</span> ${co}</div>
+        <div>${nights} night${nights > 1 ? 's' : ''}</div>
+      </div>
+      <div class="summary-breakdown">
+        <div class="summary-line"><span>₱${priceNum.toLocaleString()} × ${nights} nights</span><span>₱${total.toLocaleString()}</span></div>
+      </div>
+      <div class="summary-total"><span>Total</span><strong>₱${total.toLocaleString()}</strong></div>
+      <p class="summary-note">Taxes & fees included. Breakfast included.</p>
+    `;
+  }
+
+  document.querySelectorAll('input[name="villa_type_id"]').forEach(r => r.addEventListener('change', updateSummary));
+  checkIn.addEventListener('change', updateSummary);
+  checkOut.addEventListener('change', updateSummary);
+
+  // Highlight selected villa option
+  document.querySelectorAll('.villa-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.villa-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+  });
+</script>
+{% endblock %}

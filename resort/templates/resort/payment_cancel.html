@@ -1,0 +1,56 @@
+{% extends 'resort/base.html' %}
+{% block title %}Payment Cancelled — Demo Beach Resort{% endblock %}
+
+{% block content %}
+<section class="booking-section">
+  <div class="container">
+    <div class="confirmation-card">
+      <div class="confirmation-icon">😞</div>
+      <h2>Payment <em>Cancelled</em></h2>
+      <p class="confirmation-subtitle">
+        Your payment was not completed. Don't worry — your booking reservation
+        <strong>{{ booking.booking_reference }}</strong> is still saved.
+      </p>
+
+      <div class="cancel-options">
+        <div class="cancel-option-card">
+          <div class="cancel-option-icon">🔄</div>
+          <h4>Try Again</h4>
+          <p>Return to payment and choose another method — GCash, Maya, GrabPay, or Card.</p>
+          <a href="{% url 'payment_checkout' booking.booking_reference %}" class="btn btn-primary">
+            Retry Payment →
+          </a>
+        </div>
+        <div class="cancel-option-card">
+          <div class="cancel-option-icon">🏦</div>
+          <h4>Pay via Bank Transfer</h4>
+          <p>Send payment to BDO Account 0123-4567-8901 using reference {{ booking.booking_reference }}.</p>
+          <a href="{% url 'contact' %}" class="btn btn-outline">Contact Us</a>
+        </div>
+        <div class="cancel-option-card">
+          <div class="cancel-option-icon">📞</div>
+          <h4>Call Us Directly</h4>
+          <p>Our team can manually process your payment over the phone.</p>
+          <a href="tel:+639123456789" class="btn btn-outline">+63 912 345 6789</a>
+        </div>
+      </div>
+
+      <p style="font-size:.82rem;color:var(--mist);margin-top:24px;">
+        Your reservation is held for <strong>24 hours</strong>.
+        If payment is not received, the booking will be automatically released.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cancel-options { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin: 32px 0; text-align: left; }
+.cancel-option-card { background: var(--sand); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+.cancel-option-icon { font-size: 1.8rem; }
+.cancel-option-card h4 { font-family: var(--font-body); font-size: .95rem; font-weight: 600; }
+.cancel-option-card p { font-size: .83rem; color: var(--mist); margin: 0; flex: 1; }
+@media (max-width: 700px) { .cancel-options { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}

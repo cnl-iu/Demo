@@ -1,0 +1,109 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed — Demo Beach Resort{% endblock %}
+
+{% block content %}
+
+<section class="booking-section">
+  <div class="container">
+
+    <!-- Progress -->
+    <div class="booking-progress">
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Select Villa & Dates</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Guest Details</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step active completed"><div class="step-circle">✓</div><span>Confirmation</span></div>
+    </div>
+
+    <div class="confirmation-card">
+      <div class="confirmation-icon">🎉</div>
+      <h2>Your Booking is <em>Confirmed!</em></h2>
+      <p class="confirmation-subtitle">Thank you, {{ booking.guest_first_name }}. We're excited to welcome you to Demo Beach Resort.</p>
+      
+      <div class="booking-ref-display">
+        <span class="ref-label">Booking Reference</span>
+        <span class="ref-number">{{ booking.booking_reference }}</span>
+      </div>
+      <p class="ref-note">Save this reference number — you'll need it for check-in and any changes to your reservation.</p>
+
+      <div class="confirmation-details">
+        <div class="conf-grid">
+          <div class="conf-item">
+            <label>Villa</label>
+            <strong>{{ booking.villa.villa_type.name }}</strong>
+            <span>Unit {{ booking.villa.unit_number }}</span>
+          </div>
+          <div class="conf-item">
+            <label>Guest</label>
+            <strong>{{ booking.guest_full_name }}</strong>
+            <span>{{ booking.adults }} adult{{ booking.adults|pluralize }}{% if booking.children %}, {{ booking.children }} child{{ booking.children|pluralize }}{% endif %}</span>
+          </div>
+          <div class="conf-item">
+            <label>Check-In</label>
+            <strong>{{ booking.check_in|date:"D, d M Y" }}</strong>
+            <span>After 2:00 PM</span>
+          </div>
+          <div class="conf-item">
+            <label>Check-Out</label>
+            <strong>{{ booking.check_out|date:"D, d M Y" }}</strong>
+            <span>Before 12:00 PM</span>
+          </div>
+          <div class="conf-item">
+            <label>Duration</label>
+            <strong>{{ booking.nights }} Night{{ booking.nights|pluralize }}</strong>
+          </div>
+          <div class="conf-item">
+            <label>Total Amount</label>
+            <strong class="conf-price">₱{{ booking.total_price|floatformat:0 }}</strong>
+            <span>Taxes & breakfast included</span>
+          </div>
+        </div>
+
+        {% if booking.special_requests %}
+        <div class="conf-requests">
+          <label>Special Requests</label>
+          <p>{{ booking.special_requests }}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- What's Next -->
+      <div class="confirmation-next">
+        <h3>What Happens Next?</h3>
+        <div class="next-steps">
+          <div class="next-step">
+            <div class="next-step-num">1</div>
+            <div>
+              <strong>Email Confirmation</strong>
+              <p>A confirmation email will be sent to <em>{{ booking.guest_email }}</em> within 30 minutes.</p>
+            </div>
+          </div>
+          <div class="next-step">
+            <div class="next-step-num">2</div>
+            <div>
+              <strong>Pre-Arrival Contact</strong>
+              <p>Our team will reach out 48 hours before your arrival to confirm your preferences and arrange transfers if needed.</p>
+            </div>
+          </div>
+          <div class="next-step">
+            <div class="next-step-num">3</div>
+            <div>
+              <strong>Arrive & Enjoy</strong>
+              <p>Check in at the resort reception. Your villa will be ready from 2:00 PM. Early check-in subject to availability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confirmation-actions">
+        <a href="{% url 'homepage' %}" class="btn btn-outline">Back to Home</a>
+        <a href="{% url 'contact' %}" class="btn btn-primary">Contact Us</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

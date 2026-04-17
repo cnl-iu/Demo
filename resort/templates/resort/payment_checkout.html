@@ -1,0 +1,246 @@
+{% extends 'resort/base.html' %}
+{% load static %}
+
+{% block title %}Payment — Step 3 | Demo Beach Resort{% endblock %}
+
+{% block content %}
+<section class="booking-section">
+  <div class="container">
+
+    <!-- Progress -->
+    <div class="booking-progress">
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Select Villa & Dates</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Guest Details</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step active"><div class="step-circle">3</div><span>Payment</span></div>
+      <div class="progress-line"></div>
+      <div class="progress-step"><div class="step-circle">4</div><span>Confirmed</span></div>
+    </div>
+
+    <div class="booking-layout">
+
+      <!-- Left: Payment Methods -->
+      <div class="booking-main">
+        <h2 class="booking-title">Choose <em>Payment Method</em></h2>
+        <p class="booking-subtitle">Select how you'd like to pay. All transactions are secure and encrypted.</p>
+
+        <div class="payment-methods">
+
+          {% if paymongo_enabled %}
+          <!-- ── PayMongo (PH Methods) ── -->
+          <div class="payment-group">
+            <div class="payment-group-label">🇵🇭 Philippine Payment Methods</div>
+            <div class="payment-options">
+
+              <a href="{% url 'payment_initiate_paymongo' booking.booking_reference %}"
+                 class="payment-option-card">
+                <div class="payment-option-icon gcash-icon">
+                  <span>G</span>
+                </div>
+                <div class="payment-option-info">
+                  <strong>GCash</strong>
+                  <span>Pay instantly with your GCash wallet</span>
+                </div>
+                <div class="payment-option-arrow">→</div>
+              </a>
+
+              <a href="{% url 'payment_initiate_paymongo' booking.booking_reference %}"
+                 class="payment-option-card">
+                <div class="payment-option-icon maya-icon">
+                  <span>M</span>
+                </div>
+                <div class="payment-option-info">
+                  <strong>Maya</strong>
+                  <span>Pay with your Maya / PayMaya wallet</span>
+                </div>
+                <div class="payment-option-arrow">→</div>
+              </a>
+
+              <a href="{% url 'payment_initiate_paymongo' booking.booking_reference %}"
+                 class="payment-option-card">
+                <div class="payment-option-icon grab-icon">
+                  <span>GP</span>
+                </div>
+                <div class="payment-option-info">
+                  <strong>GrabPay</strong>
+                  <span>Pay using your GrabPay wallet</span>
+                </div>
+                <div class="payment-option-arrow">→</div>
+              </a>
+
+              <a href="{% url 'payment_initiate_paymongo' booking.booking_reference %}"
+                 class="payment-option-card">
+                <div class="payment-option-icon card-ph-icon">
+                  <span>💳</span>
+                </div>
+                <div class="payment-option-info">
+                  <strong>Credit / Debit Card (via PayMongo)</strong>
+                  <span>Visa, Mastercard, JCB</span>
+                </div>
+                <div class="payment-option-arrow">→</div>
+              </a>
+
+            </div>
+          </div>
+          {% endif %}
+
+          {% if not paymongo_enabled %}
+          <!-- ── Manual Payment Fallback ── -->
+          <div class="payment-group">
+            <div class="payment-group-label">💼 Bank Transfer / Manual Payment</div>
+            <div class="manual-payment-info">
+              <div class="bank-details">
+                <h4>Bank Transfer Details</h4>
+                <div class="bank-row"><span>Bank:</span><strong>BDO Unibank</strong></div>
+                <div class="bank-row"><span>Account Name:</span><strong>Demo Beach Resort Inc.</strong></div>
+                <div class="bank-row"><span>Account Number:</span><strong>0123-4567-8901</strong></div>
+                <div class="bank-row"><span>Branch:</span><strong>El Nido, Palawan</strong></div>
+                <div class="bank-row highlight"><span>Reference:</span><strong>{{ booking.booking_reference }}</strong></div>
+                <div class="bank-row highlight"><span>Amount:</span><strong>₱{{ booking.total_price|floatformat:0 }}</strong></div>
+              </div>
+              <p class="bank-note">
+                Please use your booking reference <strong>{{ booking.booking_reference }}</strong>
+                as the transfer reference. Send proof of payment to
+                <a href="mailto:reservations@beachresort.com">reservations@beachresort.com</a>.
+                Your booking will be confirmed within 2 hours of receiving payment.
+              </p>
+              <a href="{% url 'booking_confirmation' %}" class="btn btn-primary btn-full">
+                I've Made the Transfer →
+              </a>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+
+        <!-- Security badges -->
+        <div class="security-badges">
+          <div class="security-badge">🔒 256-bit SSL Encrypted</div>
+          <div class="security-badge">✅ PCI DSS Compliant</div>
+          <div class="security-badge">🛡️ Secure Checkout</div>
+        </div>
+      </div>
+
+      <!-- Right: Order Summary -->
+      <div class="booking-sidebar">
+        <div class="booking-summary-card booking-summary-card--static">
+          <h3>Order Summary</h3>
+
+          <div class="summary-villa">
+            <strong>{{ booking.villa.villa_type.name }}</strong>
+            <span class="villa-category-badge">{{ booking.villa.villa_type.get_category_display }}</span>
+          </div>
+
+          <div class="summary-dates">
+            <div class="date-row">
+              <div class="date-block">
+                <label>Check-In</label>
+                <strong>{{ booking.check_in|date:"D, d M Y" }}</strong>
+                <span>From 2:00 PM</span>
+              </div>
+              <div class="date-arrow">→</div>
+              <div class="date-block">
+                <label>Check-Out</label>
+                <strong>{{ booking.check_out|date:"D, d M Y" }}</strong>
+                <span>Until 12:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-breakdown">
+            <div class="summary-line">
+              <span>{{ booking.nights }} night{{ booking.nights|pluralize }}</span>
+              <span>₱{{ booking.total_price|floatformat:0 }}</span>
+            </div>
+            <div class="summary-line">
+              <span>Taxes & fees</span>
+              <span>Included</span>
+            </div>
+            <div class="summary-line">
+              <span>Daily breakfast</span>
+              <span>Included</span>
+            </div>
+          </div>
+
+          <div class="summary-total">
+            <span>Total Due</span>
+            <strong>₱{{ booking.total_price|floatformat:0 }}</strong>
+          </div>
+        </div>
+
+        <div class="booking-info-card">
+          <h4>💳 Payment Security</h4>
+          <p style="font-size:.82rem;color:var(--mist);margin:0;">
+            Your payment details are never stored on our servers.
+            All payments are processed by PayMongo or Stripe —
+            both are PCI DSS Level 1 certified.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.payment-group { margin-bottom: 32px; }
+.payment-group-label {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--sand-dark);
+}
+.payment-options { display: flex; flex-direction: column; gap: 12px; }
+.payment-option-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 2px solid var(--sand-dark);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--white);
+}
+.payment-option-card:hover {
+  border-color: var(--ocean);
+  box-shadow: var(--shadow-sm);
+  transform: translateX(4px);
+}
+.payment-option-icon {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+}
+.gcash-icon { background: #007af5; }
+.maya-icon { background: #00c83c; }
+.grab-icon { background: #00b14f; }
+.card-ph-icon { background: var(--ocean); font-size: 1.3rem; }
+.payment-option-info { flex: 1; }
+.payment-option-info strong { display: block; font-size: .95rem; color: var(--charcoal); margin-bottom: 2px; }
+.payment-option-info span { font-size: .8rem; color: var(--mist); }
+.payment-option-arrow { font-size: 1.1rem; color: var(--mist); transition: var(--transition); }
+.payment-option-card:hover .payment-option-arrow { color: var(--ocean); transform: translateX(4px); }
+
+.security-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--sand-dark); }
+.security-badge { font-size: .74rem; color: var(--mist); display: flex; align-items: center; gap: 4px; }
+
+.manual-payment-info { background: var(--sand); border-radius: var(--radius-lg); padding: 24px; }
+.bank-details { margin-bottom: 20px; }
+.bank-details h4 { font-family: var(--font-body); font-size: .85rem; font-weight: 600; margin-bottom: 14px; color: var(--charcoal); }
+.bank-row { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--sand-dark); font-size: .9rem; }
+.bank-row span { color: var(--mist); min-width: 140px; }
+.bank-row.highlight strong { color: var(--ocean); font-size: 1rem; }
+.bank-note { font-size: .85rem; color: var(--mist); margin-bottom: 20px; line-height: 1.7; }
+.bank-note a { color: var(--ocean); }
+</style>
+{% endblock %}

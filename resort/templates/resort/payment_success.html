@@ -1,0 +1,148 @@
+{% extends 'resort/base.html' %}
+{% block title %}Payment Successful — Demo Beach Resort{% endblock %}
+
+{% block content %}
+<section class="booking-section">
+  <div class="container">
+
+    <div class="booking-progress">
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Villa & Dates</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Guest Details</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step completed"><div class="step-circle">✓</div><span>Payment</span></div>
+      <div class="progress-line progress-line--done"></div>
+      <div class="progress-step active completed"><div class="step-circle">✓</div><span>Confirmed</span></div>
+    </div>
+
+    <div class="confirmation-card">
+      <div class="confirmation-icon">🎉</div>
+      <h2>Payment <em>Successful!</em></h2>
+      <p class="confirmation-subtitle">
+        Thank you, {{ booking.guest_first_name }}! Your payment has been received
+        and your villa is now fully confirmed.
+      </p>
+
+      <!-- Payment Receipt -->
+      <div class="payment-receipt">
+        <div class="receipt-header">
+          <span class="receipt-label">Payment Receipt</span>
+          <span class="receipt-status paid">✓ PAID</span>
+        </div>
+        <div class="receipt-grid">
+          {% if payment %}
+          <div class="receipt-row">
+            <span>Payment Method</span>
+            <strong>{{ payment.get_method_display|default:"Online Payment" }}</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Provider</span>
+            <strong>{{ payment.get_provider_display }}</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Amount Paid</span>
+            <strong class="receipt-amount">₱{{ payment.amount_paid|floatformat:0|default:booking.total_price|floatformat:0 }}</strong>
+          </div>
+          {% if payment.paid_at %}
+          <div class="receipt-row">
+            <span>Paid On</span>
+            <strong>{{ payment.paid_at|date:"d M Y, h:i A" }}</strong>
+          </div>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="booking-ref-display">
+        <span class="ref-label">Booking Reference</span>
+        <span class="ref-number">{{ booking.booking_reference }}</span>
+      </div>
+
+      <div class="confirmation-details">
+        <div class="conf-grid">
+          <div class="conf-item">
+            <label>Villa</label>
+            <strong>{{ booking.villa.villa_type.name }}</strong>
+            <span>Unit {{ booking.villa.unit_number }}</span>
+          </div>
+          <div class="conf-item">
+            <label>Guest</label>
+            <strong>{{ booking.guest_full_name }}</strong>
+            <span>{{ booking.adults }} adult{{ booking.adults|pluralize }}{% if booking.children %}, {{ booking.children }} child{{ booking.children|pluralize }}{% endif %}</span>
+          </div>
+          <div class="conf-item">
+            <label>Check-In</label>
+            <strong>{{ booking.check_in|date:"D, d M Y" }}</strong>
+            <span>After 2:00 PM</span>
+          </div>
+          <div class="conf-item">
+            <label>Check-Out</label>
+            <strong>{{ booking.check_out|date:"D, d M Y" }}</strong>
+            <span>Before 12:00 PM</span>
+          </div>
+          <div class="conf-item">
+            <label>Duration</label>
+            <strong>{{ booking.nights }} Night{{ booking.nights|pluralize }}</strong>
+          </div>
+          <div class="conf-item">
+            <label>Status</label>
+            <strong style="color:#27ae60;">✅ Confirmed</strong>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:.9rem;color:var(--mist);margin-bottom:28px;">
+        A payment confirmation and booking details have been sent to
+        <strong>{{ booking.guest_email }}</strong>.
+      </p>
+
+      <div class="confirmation-actions">
+        <a href="{% url 'homepage' %}" class="btn btn-outline">Back to Home</a>
+        <a href="{% url 'contact' %}" class="btn btn-primary">Contact Us</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.payment-receipt {
+  background: #f0fdf4;
+  border: 1px solid #a3e9b8;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 500px;
+  text-align: left;
+}
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.receipt-label { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--mist); }
+.receipt-status.paid {
+  background: #27ae60;
+  color: #fff;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+.receipt-grid { display: flex; flex-direction: column; gap: 8px; }
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: .88rem;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(39,174,96,.15);
+}
+.receipt-row:last-child { border-bottom: none; }
+.receipt-row span { color: var(--mist); }
+.receipt-amount { font-family: var(--font-display); font-size: 1.2rem; color: #27ae60; }
+</style>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'resort/base.html' %}
+{% block title %}Terms & Conditions — Demo Beach Resort{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="page-hero-content">
+    <div class="section-label">Legal</div>
+    <h1>Terms &amp; <em>Conditions</em></h1>
+    <p>Last updated: January 2025</p>
+  </div>
+</section>
+
+<section class="policy-section">
+  <div class="container container--narrow">
+    <div class="policy-content">
+      
+      <nav class="policy-toc">
+        <h4>Contents</h4>
+        <ol>
+          <li><a href="#acceptance">Acceptance of Terms</a></li>
+          <li><a href="#reservations">Reservations & Payments</a></li>
+          <li><a href="#checkin">Check-In / Check-Out</a></li>
+          <li><a href="#conduct">Guest Conduct</a></li>
+          <li><a href="#property">Property & Damages</a></li>
+          <li><a href="#liability">Limitation of Liability</a></li>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#governing">Governing Law</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="acceptance">1. Acceptance of Terms</h2>
+      <p>By accessing the Demo Beach Resort website, making a reservation, or staying at Demo Beach Resort ("the Resort"), you ("the Guest") agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our services.</p>
+
+      <h2 id="reservations">2. Reservations & Payments</h2>
+      <h3>2.1 Booking Confirmation</h3>
+      <p>A reservation is confirmed only upon receipt of a valid booking reference number and a confirmation email from the Resort. Verbal or informal arrangements do not constitute a confirmed booking.</p>
+      <h3>2.2 Rates & Pricing</h3>
+      <p>All rates are quoted in Philippine Peso (PHP) and are inclusive of applicable taxes and fees unless stated otherwise. Rates are subject to change without prior notice for future reservations. Once confirmed, the rate for your booking period is locked in.</p>
+      <h3>2.3 Payment Terms</h3>
+      <p>A deposit of 50% of the total accommodation cost is required within 48 hours of booking confirmation. The remaining balance is due 14 days prior to arrival. Reservations made within 14 days of arrival must be paid in full at time of booking.</p>
+      <h3>2.4 Accepted Payment Methods</h3>
+      <p>We accept bank transfers, credit cards (Visa, Mastercard), and cash (PHP). A 3% processing fee applies to credit card payments. Checks and cryptocurrency are not accepted.</p>
+
+      <h2 id="checkin">3. Check-In & Check-Out</h2>
+      <p>Standard check-in time is <strong>2:00 PM</strong>. Standard check-out time is <strong>12:00 PM (noon)</strong>. Early check-in and late check-out are subject to availability and may incur additional fees. Guests must present a valid government-issued photo ID at check-in. We reserve the right to refuse accommodation to guests who cannot provide valid identification.</p>
+
+      <h2 id="conduct">4. Guest Conduct</h2>
+      <p>Guests are expected to conduct themselves in a manner that does not disturb other guests or resort staff. Quiet hours are observed from 10:00 PM to 7:00 AM. The Resort reserves the right to ask any guest to vacate the premises if their behavior is deemed disruptive, threatening, or in violation of these Terms, without refund. Smoking is only permitted in designated areas. A PHP 5,000 cleaning fee will be charged for smoking in non-smoking areas. Pets are not permitted without prior written approval.</p>
+
+      <h2 id="property">5. Property & Damages</h2>
+      <p>Guests are responsible for any damage to resort property, including villa interiors, furnishings, fixtures, and equipment caused during their stay. The Resort reserves the right to charge the credit card on file for any such damages. A security deposit of PHP 5,000 may be required at check-in and will be refunded within 7 business days of departure, less any applicable deductions.</p>
+
+      <h2 id="liability">6. Limitation of Liability</h2>
+      <p>Demo Beach Resort shall not be liable for any loss, damage, injury, or inconvenience arising from events beyond our reasonable control, including but not limited to natural disasters, weather events, utility outages, government actions, or civil unrest. The Resort's maximum liability to any guest shall not exceed the amount paid for accommodation services.</p>
+
+      <h2 id="privacy">7. Privacy</h2>
+      <p>We collect personal information solely for the purpose of providing accommodation services and improving your experience. We do not sell or share your personal data with third parties for marketing purposes. Please see our Privacy Policy for full details on how we handle your data.</p>
+
+      <h2 id="governing">8. Governing Law</h2>
+      <p>These Terms and Conditions are governed by the laws of the Republic of the Philippines. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the courts of Palawan, Philippines.</p>
+
+      <div class="policy-footer">
+        <p>For questions about these Terms & Conditions, please contact us at <a href="mailto:legal@beachresort.com">legal@beachresort.com</a>.</p>
+        <a href="{% url 'booking_policy' %}" class="btn btn-outline">Read Booking Policy →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
