@@ -1,4 +1,4 @@
-# 🌊 Ryan's Beach Resort — Full-Stack Django Web Application
+# 🌊 Demo Beach Resort — Full-Stack Django Web Application
 
 A production-ready Django + PostgreSQL web application for a luxury beachfront resort in Palawan, Philippines.
 
