@@ -38,18 +38,21 @@
         <span></span><span></span><span></span>
       </button>
     </nav>
-
-    <!-- Mobile menu -->
-    <div class="mobile-menu" id="mobile-menu">
-      <ul>
-        <li><a href="{% url 'homepage' %}">Home</a></li>
-        <li><a href="{% url 'accommodations' %}">Villas & Accommodations</a></li>
-        <li><a href="{% url 'find_accommodation' %}">Check Availability</a></li>
-        <li><a href="{% url 'contact' %}">Contact & Location</a></li>
-        <li><a href="{% url 'booking_step1' %}" class="mobile-cta">Book Now</a></li>
-      </ul>
-    </div>
   </header>
+
+  <!-- Mobile menu — kept OUTSIDE <header> on purpose.
+       Header uses backdrop-filter when scrolled, which creates a new
+       containing block for position:fixed children and breaks full-screen
+       overlays. Keeping this as a sibling of <header> avoids that bug. -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="{% url 'homepage' %}">Home</a></li>
+      <li><a href="{% url 'accommodations' %}">Villas & Accommodations</a></li>
+      <li><a href="{% url 'find_accommodation' %}">Check Availability</a></li>
+      <li><a href="{% url 'contact' %}">Contact & Location</a></li>
+      <li><a href="{% url 'booking_step1' %}" class="mobile-cta">Book Now</a></li>
+    </ul>
+  </div>
 
   <!-- ════════════════════════════════ MESSAGES ════════════════════════════════ -->
   {% if messages %}
@@ -109,7 +112,7 @@
         <address>
           <p>📍 Barangay Paradise Cove<br>Palawan, Philippines 5300</p>
           <p>📞 <a href="tel:+639123456789">+63 912 345 6789</a></p>
-          <p>✉️ <a href="mailto:hello@beachresort.com">hello@beachresort.com</a></p>
+          <p>✉️ <a href="mailto:hello@demobeachresort.com">hello@demobeachresort.com</a></p>
           <p>🕐 Reception 24/7</p>
         </address>
       </div>
@@ -124,17 +127,5 @@
   <!-- ════════════════════════════════ SCRIPTS ════════════════════════════════ -->
   <script src="{% static 'js/main.js' %}"></script>
   {% block extra_js %}{% endblock %}
-  <!--Start of Tawk.to Script-->
-  <script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/69e1ffe40e5e8a1c3645cc6c/1jmdcv570';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-  })();
-</script>
 </body>
 </html>
