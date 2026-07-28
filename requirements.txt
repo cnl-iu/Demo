@@ -19,3 +19,4 @@ pytest-django>=4.5
 pytest-cov>=3.0
 coverage>=6.0
 dj-database-url
+django-anymail
