@@ -3,6 +3,7 @@ from django.utils.html import format_html
 from django.contrib import messages as django_messages
 from .models import VillaType, Villa, Booking, ContactMessage, Testimonial, Payment
 from .emails import send_booking_status_update_to_guest
+from .models import Payment
 
 
 @admin.register(VillaType)
