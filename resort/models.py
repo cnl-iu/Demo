@@ -102,7 +102,7 @@ class Booking(models.Model):
     def save(self, *args, **kwargs):
         if not self.booking_reference:
             import random, string
-            self.booking_reference = 'RBR' + ''.join(
+            self.booking_reference = 'DEMO' + ''.join(
                 random.choices(string.ascii_uppercase + string.digits, k=7)
             )
         if not self.nights:
