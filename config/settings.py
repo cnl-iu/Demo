@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'anymail',
     'resort',
 ]
 
@@ -92,16 +93,25 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email (configure for production)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-relay.brevo.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('BREVO_SMTP_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('BREVO_SMTP_KEY')
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
+
+ANYMAIL = {
+    'BREVO_API_KEY': os.environ.get('BREVO_API_KEY'),
+}
+
 DEFAULT_FROM_EMAIL = os.environ.get(
     'DEFAULT_FROM_EMAIL',
-    EMAIL_HOST_USER or 'a80b53001@smtp-brevo.com')
-EMAIL_TIMEOUT = 10
+    'Demo Beach Resort <no-reply@example.com>')
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp-relay.brevo.com'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+#EMAIL_HOST_USER = os.environ.get('BREVO_SMTP_USER')
+#EMAIL_HOST_PASSWORD = os.environ.get('BREVO_SMTP_KEY')
+#DEFAULT_FROM_EMAIL = os.environ.get(
+#    'DEFAULT_FROM_EMAIL',
+#    EMAIL_HOST_USER or 'a80b53001@smtp-brevo.com')
+#EMAIL_TIMEOUT = 10
 
 # Session
 SESSION_COOKIE_AGE = 86400  # 24 hours
