@@ -209,7 +209,7 @@ def send_new_booking_alert_to_admin(booking):
     Send alert email to resort admin when a new booking comes in.
     Triggered: immediately after Booking.save() in booking_step2 view.
     """
-    subject = f"🏖 NEW BOOKING — {booking.booking_reference} | {booking.villa.villa_type.name}"
+    subject = f"NEW BOOKING — {booking.booking_reference} | {booking.villa.villa_type.name}"
 
     html_body = f"""
     <!DOCTYPE html>
@@ -234,7 +234,7 @@ def send_new_booking_alert_to_admin(booking):
     </head>
     <body>
       <div class="wrapper">
-        <div class="alert-bar">⚡ New Booking Received</div>
+        <div class="alert-bar">New Booking Received</div>
         <div class="header">
           <h2>Booking #{booking.booking_reference}</h2>
           <span>Received: {booking.created_at.strftime('%d %B %Y at %I:%M %p')}</span>
@@ -254,7 +254,7 @@ def send_new_booking_alert_to_admin(booking):
             {'<tr><td>Special Req.</td><td style="color:#c9a84c;">' + booking.special_requests + '</td></tr>' if booking.special_requests else ''}
             <tr><td>Status</td><td><strong style="color:#e07050;">PENDING — Action Required</strong></td></tr>
           </table>
-          <a href="http://127.0.0.1:8000/admin/resort/booking/" class="btn">View in Admin Dashboard →</a>
+          <a href="http://demo-beach-resort.onrender.com/admin/resort/booking/" class="btn">View in Admin Dashboard →</a>
         </div>
         <div class="footer">Demo Beach Resort Admin Notification System</div>
       </div>
@@ -284,7 +284,7 @@ Total:     PHP {booking.total_price:,.0f}
 
 {'Special Request: ' + booking.special_requests if booking.special_requests else ''}
 
-Login to Admin: http://127.0.0.1:8000/admin/resort/booking/
+Login to Admin: http://demo-beach-resort.onrender.com/admin/resort/booking/
     """
 
     admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
@@ -386,7 +386,7 @@ def send_booking_status_update_to_guest(booking):
         </div>
         <div class="footer">
           <p>Demo Beach Resort · El Nido, Palawan, Philippines</p>
-          <p><a href="mailto:hello@beachresort.com">hello@beachresort.com</a></p>
+          <p><a href="mailto:cnlleva19@gmail.com">demo@beachresort.com</a></p>
         </div>
       </div>
     </body>
@@ -493,7 +493,7 @@ def send_contact_autoreply_to_guest(contact_message):
         </div>
         <div class="footer">
           <p>Demo Beach Resort · El Nido, Palawan, Philippines 5313</p>
-          <p><a href="mailto:hello@beachresort.com">hello@beachresort.com</a></p>
+          <p><a href="mailto:cnlleva19@gmail.com">demo@beachresort.com</a></p>
         </div>
       </div>
     </body>
@@ -570,7 +570,7 @@ def send_contact_alert_to_admin(contact_message):
             <tr><td>Received</td><td>{contact_message.created_at.strftime('%d %B %Y at %I:%M %p')}</td></tr>
           </table>
           <div class="msg">{contact_message.message}</div>
-          <a href="http://127.0.0.1:8000/admin/resort/contactmessage/" class="btn">View in Admin →</a>
+          <a href="http://demo-beach-resort.onrender.com/admin/resort/contactmessage/" class="btn">View in Admin →</a>
         </div>
         <div class="footer">Demo Beach Resort Admin Notification</div>
       </div>
@@ -589,7 +589,7 @@ Subject:  {contact_message.subject}
 Message:
 {contact_message.message}
 
-Admin: http://127.0.0.1:8000/admin/resort/contactmessage/
+Admin: http://demo-beach-resort.onrender.com/admin/resort/contactmessage/
     """
 
     admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
