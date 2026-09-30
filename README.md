@@ -1,4 +1,4 @@
-# 🌊 Demo Beach Resort — Full-Stack Django Web Application
+# 🌊 Demo Beach Resort — Web Application
 
 Web application for a luxury beachfront resort in Palawan, Philippines.
 
